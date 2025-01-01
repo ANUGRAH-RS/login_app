@@ -1,10 +1,22 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:login_app/Profile.dart';
+import 'package:login_app/Services/Firebaseauthservice.dart';
 import 'package:login_app/SignUp.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
 
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  TextEditingController emailController=TextEditingController();
+
+  TextEditingController passwordController=TextEditingController();
+  bool isLoading = false;
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +44,7 @@ class Login extends StatelessWidget {
                 height: 30,
               ),
               TextField(
+                controller: emailController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromARGB(255, 247, 221, 230),
@@ -54,6 +67,7 @@ class Login extends StatelessWidget {
               ),
               SizedBox(height: 10),
               TextField(
+                controller: passwordController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromARGB(255, 247, 221, 230),
@@ -78,8 +92,16 @@ class Login extends StatelessWidget {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.cyanAccent, fixedSize: Size(400, 40)),
-                onPressed: () {},
-                child: Text(
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await login(email: emailController.text, password:passwordController.text, context: context);
+                  setState(() {
+                    isLoading = false;
+                  });
+                  },
+                child: isLoading?CircularProgressIndicator() :Text(
                   "Submit",
                   style: TextStyle(color: Colors.purple),
                 ),

@@ -1,9 +1,25 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:login_app/Login.dart';
+import 'package:login_app/Services/Firebaseauthservice.dart';
 
-class Signup extends StatelessWidget {
-  const Signup({super.key});
+class Signup extends StatefulWidget {
+  Signup({super.key});
+
+  @override
+  State<Signup> createState() => _SignupState();
+}
+
+class _SignupState extends State<Signup> {
+  TextEditingController emailController=TextEditingController();
+
+  TextEditingController passwordController=TextEditingController();
+
+  TextEditingController usernameController=TextEditingController();
+
+  TextEditingController confirmpasswordController=TextEditingController();
+
+  bool isLoading =false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +48,7 @@ class Signup extends StatelessWidget {
                 height: 30,
               ),
               TextField(
+                controller: usernameController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromARGB(255, 247, 221, 230),
@@ -55,6 +72,7 @@ class Signup extends StatelessWidget {
               ),
               SizedBox(height: 10),
               TextField(
+                controller: emailController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromARGB(255, 247, 221, 230),
@@ -75,10 +93,11 @@ class Signup extends StatelessWidget {
                   ),
                 ),
                 style: TextStyle(fontSize: 20),
-                obscureText: true, // Hide password text
+              
               ),
               SizedBox(height: 10),
               TextField(
+                controller: passwordController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromARGB(255, 247, 221, 230),
@@ -103,6 +122,7 @@ class Signup extends StatelessWidget {
               ),
               SizedBox(height: 10),
               TextField(
+                controller: confirmpasswordController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromARGB(255, 247, 221, 230),
@@ -130,13 +150,21 @@ class Signup extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.cyanAccent,
                     fixedSize: Size(400, 40)),
-                onPressed: () {},
-                child: Text(
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await signup(email: emailController.text, password:passwordController.text, username: usernameController.text, confirmpassword: confirmpasswordController.text,context: context);
+                  setState(() {
+                    isLoading = false;
+                  });
+                  },
+                child: isLoading?CircularProgressIndicator() :Text(
                   "SignUp",
                   style: TextStyle(color: Colors.purple),
                 ),
               ),
-              SizedBox(height: 50),
+              SizedBox(height: 10),
               // Forgot Password link
               TextButton(
                 onPressed: () {
@@ -145,8 +173,20 @@ class Signup extends StatelessWidget {
                   // Navigator.push(context, MaterialPageRoute(builder: (_) => ForgotPasswordScreen()));
                 },
                 child: Text(
-                  "Forgot Password?",
-                  style: TextStyle(color: Colors.blue),
+                  "Or",
+                  style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+                ),
+              ),
+              SizedBox(height: 5),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  side: BorderSide(color: Colors.black),
+                    // backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                    fixedSize: Size(400, 40)),
+                onPressed: () {},
+                child: Text(
+                  "Sign in with google",
+                  style: TextStyle(color: Colors.purple),
                 ),
               ),
               // Don't have an account? Sign Up link
@@ -175,8 +215,8 @@ class Signup extends StatelessWidget {
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               // Navigate to Sign Up screen or show the sign-up flow
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (_) => Login()));
+                              Navigator.pop(context);
+                                  // MaterialPageRoute(builder: (_) => Login()));
                             },
                         ),
                       ],
