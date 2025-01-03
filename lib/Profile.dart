@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatelessWidget {
@@ -16,7 +19,7 @@ class Profile extends StatelessWidget {
                 backgroundImage: NetworkImage(
                     'https://cdn.pixabay.com/photo/2015/04/23/22/00/new-year-background-736885_1280.jpg'),
               ),
-              const Text("Anugrah",
+               Text(FirebaseAuth.instance.currentUser?.email??"Anugrah",
                   style: TextStyle(
                       color: Colors.deepOrange,
                       fontSize: 20,

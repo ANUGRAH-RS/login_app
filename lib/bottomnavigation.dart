@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:login_app/Profile.dart';
-import 'package:login_app/Services/notescreen.dart';
+import 'package:login_app/notescreen.dart';
 
 class Bottomnavigation extends StatefulWidget {
   const Bottomnavigation({super.key});
@@ -11,7 +11,7 @@ class Bottomnavigation extends StatefulWidget {
 
 class _BottomnavigationState extends State<Bottomnavigation> {
   List pages = [Notescreen(), Profile()];
-  int selectedIndex = 1;
+  int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
